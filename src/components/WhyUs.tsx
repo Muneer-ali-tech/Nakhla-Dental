@@ -82,7 +82,9 @@ export function WhyUs() {
                 </ol>
 
                 {/* التوقيع والختم */}
-                <div className="mt-4 flex items-end justify-between gap-6 border-t border-ink/15 pt-8">
+                {/* flex-wrap: على الجوال لا يتسع سطر التوقيع + الختم معاً
+                    (محتواه الأدنى ٣٥٢px) فيكسر عرض العمود كاملاً */}
+                <div className="mt-4 flex flex-wrap items-end justify-between gap-6 border-t border-ink/15 pt-8">
                   <div>
                     <svg viewBox="0 0 200 60" className="h-14 w-44 text-palm" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
                       <path

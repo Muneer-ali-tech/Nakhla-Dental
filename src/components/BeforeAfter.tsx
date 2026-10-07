@@ -275,7 +275,9 @@ export function BeforeAfter() {
 
         <div className="mt-12 grid gap-8 lg:mt-16 lg:grid-cols-12 lg:gap-12">
           {/* فهرس الحالات */}
-          <div className="lg:col-span-3">
+          {/* min-w-0: كي ينكمش العمود على الجوال ولا يتمدد فهرس الحالات
+              الأفقي إلى عرض محتواه فيكسر الصفحة (فيض يساراً في RTL) */}
+          <div className="min-w-0 lg:col-span-3">
             <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0 lg:pb-0" role="tablist">
               {CASES.map((k, i) => (
                 <button
@@ -303,7 +305,7 @@ export function BeforeAfter() {
           </div>
 
           {/* المنصّة */}
-          <div className="lg:col-span-9">
+          <div className="min-w-0 lg:col-span-9">
             <div ref={stageRef} key={c.id} className="pop">
               {/* PROMPT (قبل): {c.before.prompt} — PROMPT (بعد): {c.after.prompt} — موجودة في مصفوفة CASES أعلاه */}
               <div className="relative">

@@ -77,7 +77,9 @@ export function Testimonials() {
         </div>
 
         {/* الشهادات */}
-        <div className="lg:col-span-8">
+        {/* min-w-0: بدونها لا ينكمش عمود الشبكة على الجوال فيتمدد شريط
+            البطاقات إلى عرض محتواه (≈١٠٥٠px) ويفيض يساراً في اتجاه RTL */}
+        <div className="min-w-0 lg:col-span-8">
           <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 lg:mx-0 lg:grid lg:grid-cols-2 lg:gap-x-16 lg:gap-y-0 lg:overflow-visible lg:px-0 lg:pb-0">
             {QS.map((q, i) => (
               <figure
