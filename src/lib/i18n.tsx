@@ -8,11 +8,14 @@ export type Lang = "ar" | "en";
 export type Bi = { ar: string; en: string };
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+/* بلا lookbehind — متصفحات الجوال القديمة (Safari < 16.4 وبعض WebView)
+   تفشل في تحليل (?<=…) عند التحميل فتُعطِّل الموقع كاملاً.
+   الصيغة التالية سلوكها مطابق تماماً. */
 export function toArDigits(s: string) {
   return s
     .replace(/\d/g, (d) => AR_DIGITS[Number(d)])
-    .replace(/(?<=[٠-٩]),(?=[٠-٩])/g, "٬")
-    .replace(/(?<=[٠-٩])\.(?=[٠-٩])/g, "٫");
+    .replace(/([٠-٩]),(?=[٠-٩])/g, "$1٬")
+    .replace(/([٠-٩])\.(?=[٠-٩])/g, "$1٫");
 }
 
 type Ctx = {

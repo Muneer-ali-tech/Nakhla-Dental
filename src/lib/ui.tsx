@@ -7,13 +7,19 @@ import { useLang, toArDigits } from "./i18n";
    أدوات الواجهة المشتركة
    ============================================================ */
 
-/** يراقب ظهور العنصر في الشاشة (مرة واحدة) */
+/** يراقب ظهور العنصر في الشاشة (مرة واحدة).
+ * المتصفحات القديمة/المدمجة (WebView) التي لا تدعم IntersectionObserver
+ * تُظهر العنصر مباشرة — وإلا لبقيت الأقسام مخفية (opacity:0) إلى الأبد. */
 export function useInView<T extends HTMLElement>(threshold = 0.18) {
   const ref = useRef<T>(null);
   const [inView, setIn] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setIn(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
