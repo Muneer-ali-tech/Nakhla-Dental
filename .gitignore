@@ -1,6 +1,7 @@
 # أسرار محلية — لا تُرفع أبداً إلى المستودع
 demo-mail.local.json
 *.local
+*secrets*
 
 # بناء ومخرجات
 node_modules/
