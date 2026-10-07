@@ -1,0 +1,10 @@
+{
+  "_comment": "انسخ هذا الملف إلى demo-mail.local.json وأكمل بياناتك لتفعيل الإرسال الحقيقي للبريد. للأمان: demo-mail.local.json مستثنى من git (*.local) ولن يُرفع أبداً.",
+  "_gmail_hint": "لكي تعمل مع Gmail: فعّل التحقق بخطوتين، ثم أنشئ 'كلمة مرور التطبيقات' من إعدادات حساب Google واستخدمها في pass (ليست كلمة مرور حسابك).",
+  "host": "smtp.gmail.com",
+  "port": 465,
+  "secure": true,
+  "user": "your-email@gmail.com",
+  "pass": "ضع-هنا-كلمة-مرور-التطبيقات-من-16-حرفاً",
+  "from": "طابة دنت — عرض تجريبي <your-email@gmail.com>"
+}
