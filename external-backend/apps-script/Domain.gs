@@ -41,7 +41,8 @@ function make_(body,now,c) {
   assert_(d.is_test===true,'TEST_DATA_REQUIRED');
   assert_(['INCOMPLETE','SUBMITTED'].indexOf(d.phase)>=0,'INVALID_PHASE');
   var email=email_(d.email);
-  assert_(c.allowed.indexOf(email)>=0,'RECIPIENT_NOT_ALLOWED');
+  /* القائمة الفارغة تعني قبول أي بريد زائر */
+  if (c.allowed.length) assert_(c.allowed.indexOf(email)>=0,'RECIPIENT_NOT_ALLOWED');
   var consent=consent_(d.consent,now);
   // Step-1 capture: name + email + phone are stored the moment the visitor
   // presses "التالي", so an abandoned attempt still yields a saved lead.

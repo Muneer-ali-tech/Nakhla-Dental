@@ -72,7 +72,8 @@ function processOne_() {
     if(!selected) return 'EMPTY';
     if(!c.fast && quiet_(now)) return 'QUIET_HOURS';
     var r=selected.state,j=selected.job;
-    assert_(c.allowed.indexOf(r.email)>=0,'RECIPIENT_NOT_ALLOWED');
+    /* القائمة الفارغة تعني قبول أي بريد زائر */
+    if (c.allowed.length) assert_(c.allowed.indexOf(r.email)>=0,'RECIPIENT_NOT_ALLOWED');
     var message=render_(r,j,c); j.preview=message.body;
     if(c.mode==='DRY_RUN') {
       j.status='SIMULATED'; j.reason='NO_EMAIL_SENT'; save_(c,selected.row,r);

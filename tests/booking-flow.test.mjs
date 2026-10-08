@@ -198,3 +198,36 @@ test('Nakhla function: a start without follow-up consent is rejected (explicit o
   assert.equal(res.body.reason, 'FOLLOWUP_CONSENT_REQUIRED');
   assert.equal(sim.allState().length, 0, 'nothing was created');
 });
+
+test('Nakhla function: any visitor email is accepted — instant receipt, follow-up due in ~3 minutes', async () => {
+  const { handler, sim } = nakhlaRuntime();
+
+  // بريد زائر عشوائي غير مدرج في أي قائمة — يجب أن يُقبل
+  const email = 'random-visitor-' + Date.now() + '@example.com';
+  const res = await postBooking(handler, {
+    action: 'start',
+    requestId: 'nakhla-open-0001',
+    name: 'زائر جديد',
+    email,
+    phone: '0501112222',
+    consent: { service: true, followup: true, review: false },
+    lang: 'ar',
+  });
+  assert.equal(res.status, 200, `any email accepted: ${JSON.stringify(res.body)}`);
+  assert.equal(res.body.ok, true);
+
+  const st = sim.allState()[0];
+  assert.equal(st.status, 'INCOMPLETE');
+
+  // التذكير مجدول بعد ~٣ دقائق (ساعة FAST) — ليس فوراً
+  const fu = st.jobs.filter((j) => j.kind === 'FOLLOWUP')[0];
+  const gap = (Date.parse(fu.due_at) - Date.parse(st.created_at)) / 1000;
+  assert.ok(gap > 150 && gap < 210, `follow-up is due ~3 minutes after create (gap=${gap}s)`);
+  assert.equal(fu.status, 'PENDING', 'follow-up not sent yet');
+
+  // الرسالة الفورية هي «إشعار الاستلام» (سلوك مقصود)، لا التذكير
+  assert.ok(
+    sim.mail.some((m) => m.to === email && m.subject.includes('تأكيد استلام فوري')),
+    'instant receipt email arrives immediately (by design)',
+  );
+});

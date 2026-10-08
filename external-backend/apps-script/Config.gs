@@ -15,7 +15,9 @@ function cfg_() {
   var allowed = (p.ALLOWED_EMAILS || '').split(',').map(function(x) {
     return x.trim().toLowerCase();
   }).filter(Boolean);
-  assert_(allowed.length > 0 && allowed.length <= 5, 'CONFIG_ALLOWLIST');
+  /* قائمة فارغة = قبول بريد أي زائر (وضع العيادة الحقيقي).
+     قائمة غير فارغة = حصر الرسائل بها فقط (وضع العرض التجريبي، ≤٥). */
+  assert_(allowed.length <= 5, 'CONFIG_ALLOWLIST');
   allowed.forEach(email_);
   if (p.MAIL_MODE === 'EMAIL') email_(p.REPLY_TO);
   assert_(/^[A-Za-z0-9_-]{43,128}$/.test(p.INGEST_SECRET || ''), 'CONFIG_INGEST_SECRET');
