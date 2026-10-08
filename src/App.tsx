@@ -19,6 +19,7 @@ import { Faq } from "./components/Faq";
 import { FinalCta } from "./components/FinalCta";
 import { Footer } from "./components/Footer";
 import { Dock } from "./components/Dock";
+import { OfferPopup } from "./components/OfferPopup";
 
 /* ============================================================
    نخلة لطب الأسنان — الصفحة الرئيسية
@@ -68,6 +69,8 @@ export default function App() {
         {/* ١٧) الفوتر */}
         <Footer />
         <Dock />
+        {/* ١٨) نظام العرض الذكي: نافذة سطح المكتب + شريط الجوال (٣٠٪ تمرير) */}
+        <OfferPopup />
       </BookingProvider>
     </LangProvider>
   );
