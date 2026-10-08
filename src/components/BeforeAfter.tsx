@@ -6,6 +6,12 @@ import { useBooking } from "./Booking";
 import { Check } from "./Icons";
 import { cn } from "../utils/cn";
 
+/* ---- صور قبل وبعد الحقيقية ---- */
+import baSmile from "../assets/img/ba-smile.jpg";
+import baWhitening from "../assets/img/ba-whitening.jpg";
+import baOrtho from "../assets/img/ba-ortho.jpg";
+import baImplant from "../assets/img/ba-implant.jpg";
+
 /* ============================================================
    ٤) قبل وبعد — نتائج حقيقية
    التقديم: نقلتُ هذا القسم مباشرة بعد مؤشرات الثقة (الانبهار ← الدليل)،
@@ -26,8 +32,8 @@ type Case = {
   procedure: Bi;
   problems: Bi[];
   results: Bi[];
-  before: { cfg: SmileCfg; src?: string; prompt: string };
-  after: { cfg: SmileCfg; src?: string; prompt: string };
+  before: { cfg: SmileCfg; src?: string; half?: "left" | "right"; prompt: string };
+  after: { cfg: SmileCfg; src?: string; half?: "left" | "right"; prompt: string };
 };
 
 const CASES: Case[] = [
@@ -51,6 +57,8 @@ const CASES: Case[] = [
     before: {
       prompt:
         "Close-up clinical photo of a smile: upper front teeth with worn, uneven incisal edges, a small chip on the upper-left central incisor, a visible diastema (gap) between the two central incisors, shorter lateral incisors, yellowish-grey tone with old stains; natural lighting, neutral skin, lips relaxed.",
+      src: baSmile,
+      half: "left",
       cfg: {
         shade: "dull",
         gap: 16,
@@ -69,6 +77,8 @@ const CASES: Case[] = [
     after: {
       prompt:
         "Same framing: the same smile after 8 porcelain veneers — symmetrical natural-length incisors, no gap, clean smooth edges, soft ivory shade (B1) with subtle translucency at the edges, healthy pink gums; same lighting.",
+      src: baSmile,
+      half: "right",
       cfg: { shade: "natural", teeth: { L1: { sh: 0.97 }, R1: { sh: 0.97 } } },
     },
   },
@@ -92,6 +102,8 @@ const CASES: Case[] = [
     before: {
       prompt:
         "Close-up clinical photo of a natural smile with well-shaped but stained teeth (shade A4): yellow-brown tone, darker near the gums, small brown stain spots on laterals and canines, healthy gums; natural daylight.",
+      src: baWhitening,
+      half: "left",
       cfg: {
         shade: "stained",
         teeth: {
@@ -109,6 +121,8 @@ const CASES: Case[] = [
     after: {
       prompt:
         "Same framing and teeth shape after in-clinic whitening: bright clean white (shade B1), even colour from gum to edge, soft natural highlights, no stains; same lighting.",
+      src: baWhitening,
+      half: "right",
       cfg: { shade: "bright" },
     },
   },
@@ -132,6 +146,8 @@ const CASES: Case[] = [
     before: {
       prompt:
         "Close-up clinical photo of a smile with crowded upper teeth: lateral incisor twisted and tucked behind the central, other lateral overlapping forward, canine erupted high near the gum, overlapping edges, no gaps; natural light.",
+      src: baOrtho,
+      half: "left",
       cfg: {
         shade: "natural",
         papilla: false,
@@ -150,6 +166,8 @@ const CASES: Case[] = [
     after: {
       prompt:
         "Same framing after 10 months of clear aligners: perfectly aligned upper arch, evenly spaced teeth, natural symmetry, healthy gum scallops; same lighting.",
+      src: baOrtho,
+      half: "right",
       cfg: { shade: "natural", teeth: { R1: { sh: 0.97 }, L2: { sh: 1.02 } } },
     },
   },
@@ -173,6 +191,8 @@ const CASES: Case[] = [
     before: {
       prompt:
         "Close-up clinical photo of a smile with the upper-left lateral incisor missing: a dark visible gap, flattened gum ridge, the canine tilted toward the gap, the central slightly rotated; natural light.",
+      src: baImplant,
+      half: "left",
       cfg: {
         shade: "natural",
         teeth: { L1: { missing: true }, L0: { rot: 4, dx: -2 }, L2: { rot: -13, dx: 14 } },
@@ -181,13 +201,36 @@ const CASES: Case[] = [
     after: {
       prompt:
         "Same framing after implant restoration: the missing lateral incisor replaced with a ceramic crown perfectly matching neighbours in shade and shape, natural gum contour, canine upright; same lighting.",
+      src: baImplant,
+      half: "right",
       cfg: { shade: "natural", teeth: { L1: { sh: 0.98 } } },
     },
   },
 ];
 
 function Pane({ side }: { side: Case["before"] }) {
-  return side.src ? <img src={side.src} alt="" className="h-full w-full object-cover" /> : <Smile cfg={side.cfg} className="h-full w-full" />;
+  if (side.src) {
+    /* كل صورة تحتوي على نصفين: قبل (يسار) وبعد (يمين).
+       نعرض النصف المطلوب فقط بتوسيع الصورة إلى 200% عرضاً
+       وإزاحة object-position لليسار أو اليمين. */
+    const isLeft = side.half === "left";
+    return (
+      <img
+        src={side.src}
+        alt=""
+        className="h-full w-full object-cover"
+        style={{
+          objectFit: "cover",
+          objectPosition: isLeft ? "left center" : "right center",
+          /* قص نصف الصورة: نجعل عرض الصورة ضعف الحاوية ونزيحها */
+          width: "200%",
+          maxWidth: "none",
+          ...(isLeft ? { marginLeft: 0 } : { marginLeft: "-100%" }),
+        }}
+      />
+    );
+  }
+  return <Smile cfg={side.cfg} className="h-full w-full" />;
 }
 
 export function BeforeAfter() {
