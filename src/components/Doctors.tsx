@@ -96,7 +96,7 @@ export function Doctors() {
                   </div>
                   <p className="mt-4 hidden max-w-xl text-hajar/80 sm:block">{tx(d.bio)}</p>
                   <Btn className="mt-5 !min-h-[48px] w-full sm:w-auto" onClick={() => open({ doctor: tx(d.name) })}>
-                    {tx({ ar: "احجز مع الدكتور", en: "Book with the doctor" })}
+                    {tx({ ar: "احجز موعدي مع الدكتور", en: "Book my visit with the doctor" })}
                   </Btn>
                 </div>
               </div>

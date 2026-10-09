@@ -165,7 +165,7 @@ function Detail({ s, dark, compact }: { s: Spec; dark?: boolean; compact?: boole
         </div>
       </div>
       <Btn variant={dark ? "bronze" : "palm"} onClick={() => open({ service: s.id })} className="mt-8 w-full sm:w-auto">
-        {tx({ ar: "احجز هذه الخدمة", en: "Book this service" })}
+        {tx({ ar: "أريد هذه الخدمة", en: "I want this service" })}
       </Btn>
     </div>
   );

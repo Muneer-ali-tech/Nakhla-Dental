@@ -163,7 +163,7 @@ export function Branches() {
                 </a>
               </div>
               <Btn className="mt-3 w-full" onClick={() => open({ branch: b.id })}>
-                {tx({ ar: "احجز في هذا الفرع", en: "Book at this branch" })}
+                {tx({ ar: "احجز موعدي في هذا الفرع", en: "Book my visit at this branch" })}
               </Btn>
             </div>
           </div>

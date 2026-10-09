@@ -101,13 +101,13 @@ export function Header() {
               onClick={() => open()}
               className="cham hidden min-h-[44px] items-center bg-bronze px-5 font-head text-[0.82rem] font-bold text-hajar transition-colors hover:bg-palm sm:inline-flex"
             >
-              {tx({ ar: "احجز موعدك", en: "Book a visit" })}
+              {tx({ ar: "احجز موعدي", en: "Book my visit" })}
             </button>
             <button
               onClick={() => open()}
               className="cham inline-flex min-h-[44px] items-center bg-bronze px-4 font-head text-[0.8rem] font-bold text-hajar sm:hidden"
             >
-              {tx({ ar: "احجز", en: "Book" })}
+              {tx({ ar: "احجز موعدي", en: "Book my visit" })}
             </button>
             <button onClick={() => setMenu(true)} className="grid h-11 w-11 place-items-center text-ink lg:hidden" aria-label={tx({ ar: "القائمة", en: "Menu" })}>
               <Menu className="h-7 w-7" />
@@ -152,7 +152,7 @@ export function Header() {
               }}
               className="cham flex min-h-[58px] w-full items-center justify-center bg-bronze font-head font-bold"
             >
-              {tx({ ar: "احجز استشارتك المجانية", en: "Book your free consultation" })}
+              {tx({ ar: "احجز استشارتي المجانية", en: "Book my free consultation" })}
             </button>
             <div className="grid grid-cols-2 gap-3">
               <a href={`tel:${MAIN_PHONE.replace(/\s/g, "")}`} className="cham flex min-h-[52px] items-center justify-center gap-2 border border-hajar/30 font-head text-sm font-bold">

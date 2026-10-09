@@ -512,7 +512,7 @@ export function BookingForm({ pref }: { pref?: Pref }) {
           ) : step === 4 ? (
             <>
               <Check className="h-4.5 w-4.5" />
-              {tx({ ar: "إرسال طلب الحجز", en: "Send booking request" })}
+              {tx({ ar: "احجز موعدي الآن", en: "Book my appointment now" })}
             </>
           ) : (
             <>

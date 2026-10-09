@@ -58,7 +58,7 @@ export function Hero() {
 
           <div className="rv in mt-9 flex flex-col gap-3 sm:flex-row" style={{ ["--d" as string]: "1100ms" }}>
             <Btn onClick={() => open()} className="sm:min-w-[260px]">
-              {tx({ ar: "احجز استشارتك المجانية", en: "Book your free consultation" })}
+              {tx({ ar: "احجز استشارتي المجانية", en: "Book my free consultation" })}
             </Btn>
             <Btn variant="ghost" href="#results" arrow={false}>
               {tx({ ar: "شاهد النتائج الحقيقية", en: "See real results" })}

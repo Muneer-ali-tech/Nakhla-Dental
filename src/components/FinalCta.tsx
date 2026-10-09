@@ -75,9 +75,9 @@ export function FinalCta() {
         </div>
 
         <div className="mx-auto mt-8 flex max-w-4xl flex-col items-stretch justify-center gap-3 sm:flex-row">
-          <a href={`tel:${MAIN_PHONE.replace(/\s/g, "")}`} className="cham flex min-h-[54px] flex-1 items-center justify-center gap-3 border border-hajar/35 font-head text-[0.9rem] font-bold hover:bg-hajar hover:text-palm">
+          <a href={`tel:${MAIN_PHONE.replace(/\s/g, "")}`} className="cham flex min-h-[54px] flex-1 items-center justify-center gap-3 bg-hajar font-head text-[0.9rem] font-bold text-palm-deep transition-colors hover:bg-bronze hover:text-hajar">
             <Phone className="h-5 w-5" />
-            <span>{tx({ ar: "أو اتصل بنا", en: "Or call us" })}</span>
+            <span>{tx({ ar: "أو اتصل الآن", en: "Or call now" })}</span>
             <span dir="ltr" className="opacity-80">{MAIN_PHONE}</span>
           </a>
           <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener" className="cham flex min-h-[54px] flex-1 items-center justify-center gap-3 border border-hajar/35 font-head text-[0.9rem] font-bold hover:bg-hajar hover:text-palm">

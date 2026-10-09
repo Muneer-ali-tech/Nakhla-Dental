@@ -98,7 +98,7 @@ export function Dock() {
             <Chat className="h-6 w-6" />
           </button>
           <button onClick={() => open()} className="cham flex h-[52px] flex-1 items-center justify-center gap-2 bg-bronze font-head text-[0.9rem] font-bold text-hajar">
-            {tx({ ar: "احجز موعدك", en: "Book a visit" })}
+            {tx({ ar: "احجز موعدي", en: "Book my visit" })}
             <Arrow className="h-4 w-4" />
           </button>
         </div>
