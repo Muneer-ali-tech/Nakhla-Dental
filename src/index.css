@@ -461,6 +461,13 @@ input[type="range"].nj::-moz-range-thumb {
   }
 }
 
+/* ماسات محطات رحلة المريض داخل الـ SVG: تكبيرها عند التفعيل حول مركزها */
+.journey-mark {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 700ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
