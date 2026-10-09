@@ -102,9 +102,17 @@ export function Hero() {
                 <defs>
                   <path id="seal" d="M75 75 m-56 0 a56 56 0 1 1 112 0 a56 56 0 1 1 -112 0" />
                 </defs>
-                <text fill="#C8B79A" fontSize="11.5" fontFamily="Sora, sans-serif" fontWeight="600" letterSpacing="3.2">
-                  <textPath href="#seal">NAKHLA · DENTAL ATELIER · MADINAH · HA'IL ·</textPath>
-                </text>
+                {/* نص دائري عربي: بلا letter-spacing (يفصل الحروف المتصلة)، اتجاه rtl،
+                    والحروف تُرسم بترتيبها البصري الصحيح على المسار نفسه */}
+                {isAr ? (
+                  <text fill="#C8B79A" fontSize="12" fontFamily="'Noto Kufi Arabic', sans-serif" fontWeight="600" direction="rtl" unicodeBidi="plaintext" style={{ letterSpacing: 0 }}>
+                    <textPath href="#seal">نخلة لطب الأسنان · المدينة المنورة · ابتسامة تستظل بها ثقتك</textPath>
+                  </text>
+                ) : (
+                  <text fill="#C8B79A" fontSize="11.5" fontFamily="Sora, sans-serif" fontWeight="600" letterSpacing="3.2">
+                    <textPath href="#seal">NAKHLA · DENTAL ATELIER · MADINAH · HA'IL ·</textPath>
+                  </text>
+                )}
               </svg>
               <LogoMark className="h-10 w-10 text-hajar" style={{ ["--logo-in" as string]: "#1F3D2B" }} />
             </div>
