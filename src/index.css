@@ -450,6 +450,17 @@ input[type="range"].nj::-moz-range-thumb {
   background-size: 34px 34px;
 }
 
+/* مسافة انزلاق ضلفتي باب الحجز: تحدّد بروز النتوءين المتبقيين بعد الفتح
+   (نتوء أوسع قليلاً على سطح المكتب، وأصغر على الجوال) */
+:root {
+  --leaf-overtravel: 61px;
+}
+@media (min-width: 640px) {
+  :root {
+    --leaf-overtravel: 58px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

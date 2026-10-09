@@ -16,7 +16,7 @@ function Leaf({ side, open }: { side: "left" | "right"; open: boolean }) {
   return (
     <div
       className={`absolute inset-y-0 z-20 w-1/2 bg-palm transition-transform duration-[2200ms] ease-[cubic-bezier(.7,0,.2,1)] ${side === "left" ? "left-0" : "right-0"}`}
-      style={{ transform: open ? `translateX(${side === "left" ? "calc(-100% - 61px)" : "calc(100% + 61px)"})` : "none", pointerEvents: open ? "none" : "auto" }}
+      style={{ transform: open ? `translateX(${side === "left" ? "calc(-100% - var(--leaf-overtravel))" : "calc(100% + var(--leaf-overtravel))"})` : "none", pointerEvents: open ? "none" : "auto" }}
       aria-hidden
     >
       <div className="grain-l absolute inset-0" />
