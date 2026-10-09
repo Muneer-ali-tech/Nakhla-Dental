@@ -166,6 +166,18 @@ html[lang="en"] .track {
     0 28px
   );
 }
+/* ثقبا تذكرة حاسبة التقسيط: قناع على البطاقة يقتطع دائرتين نصفيتين عند
+   حافتيها بارتفاع خط التمزيق (تُحدَّث النسبة عبر --notch-y من JS)،
+   فتظهر خلفية القسم الحقيقية بنسيجها وظلال النخيل من خلال الثقبين */
+.ticket-mask {
+  --notch-y: 50%;
+  -webkit-mask: radial-gradient(circle 16px at 0 var(--notch-y), transparent 15.5px, #000 16px),
+    radial-gradient(circle 16px at 100% var(--notch-y), transparent 15.5px, #000 16px);
+  -webkit-mask-composite: source-in;
+  mask: radial-gradient(circle 16px at 0 var(--notch-y), transparent 15.5px, #000 16px),
+    radial-gradient(circle 16px at 100% var(--notch-y), transparent 15.5px, #000 16px);
+  mask-composite: intersect;
+}
 /* نافذة نجدية: قمة مثلثية */
 .najdi-window {
   clip-path: polygon(0 14%, 50% 0, 100% 14%, 100% 100%, 0 100%);

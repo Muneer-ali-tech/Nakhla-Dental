@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "../lib/i18n";
 import { Btn, Eyebrow, Reveal, Words } from "../lib/ui";
 import { Check } from "./Icons";
@@ -46,6 +46,23 @@ export function Installments() {
 
   const chip = (on: boolean) =>
     cn("cham min-h-[46px] px-4 font-head text-[0.82rem] font-bold transition-colors", on ? "bg-bronze text-hajar" : "border border-hajar/30 text-hajar hover:bg-hajar/10");
+
+  /* ثقبا التذكرة يقتطعهما قناع البطاقة (ticket-mask) عند ارتفاع خط
+     التمزيق نفسه — تُقاس النسبة من موضع الخط لا من قيمة ثابتة،
+     فتظهر خلفية القسم بنسيجها وظلال نخيلها من خلال الثقبين */
+  const cardRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const card = cardRef.current;
+    const line = lineRef.current;
+    if (!card || !line) return;
+    const calc = () => card.style.setProperty("--notch-y", `${((line.offsetTop / card.offsetHeight) * 100).toFixed(2)}%`);
+    calc();
+    const ro = new ResizeObserver(calc);
+    ro.observe(card);
+    document.fonts?.ready.then(calc).catch(() => {});
+    return () => ro.disconnect();
+  }, []);
 
   return (
     <section id="pricing" className="sec">
@@ -95,7 +112,7 @@ export function Installments() {
         {/* التذكرة: الحاسبة */}
         <Reveal className="lg:col-span-7" delay={150}>
           <div className="on-dark relative text-hajar drop-shadow-[0_40px_50px_rgba(22,32,26,.28)]">
-            <div className="cham-lg grain-l relative bg-palm">
+            <div ref={cardRef} className="cham-lg grain-l relative bg-palm ticket-mask">
 
 
               <div className="p-6 pb-10 sm:p-10 sm:pb-12">
@@ -147,10 +164,8 @@ export function Installments() {
                 </div>
               </div>
 
-              {/* خط التمزيق مع ثقبي الجانبين */}
-              <div className="relative h-0">
-                <span className="absolute -start-4 top-0 h-8 w-8 -translate-y-1/2 rounded-full bg-hajar" />
-                <span className="absolute -end-4 top-0 h-8 w-8 -translate-y-1/2 rounded-full bg-hajar" />
+              {/* خط التمزيق — الثقبان يقتطعهما قناع البطاقة (ticket-mask) عند الحافتين */}
+              <div ref={lineRef} className="relative h-0">
                 <div className="mx-8 border-t-2 border-dashed border-hajar/30 sm:mx-10" />
               </div>
 
