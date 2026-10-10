@@ -3,7 +3,7 @@ function json_(x) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 function doGet() {
-  return json_({ok:true,service:'nakhla-dent-demo',version:'1.0.0',message:'LIVENESS_ONLY'});
+  return json_({ok:true,service:'tabah-dent-demo',version:'1.0.0',message:'LIVENESS_ONLY'});
 }
 function verify_(raw,c,now) {
   assert_(typeof raw==='string' && raw.length<=16000,'BODY_TOO_LARGE');

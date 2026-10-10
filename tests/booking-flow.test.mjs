@@ -3,9 +3,9 @@
 /**
  * Nakhla Dental — two-phase booking flow test against the REAL local
  * pieces: this site's own netlify/functions/booking.ts (bundled) wired to
- * the External_v1 simulator (this folder's own .gs sources in
- * external-backend/) via its own scripts/demo-runtime.mjs. No network;
- * mail stays in the in-memory inbox.
+ * the External_v1 simulator (the actual .gs sources) from the parent
+ * workspace's scripts/demo-runtime.mjs. No network; mail stays in the
+ * in-memory inbox.
  *
  * Verifies the "restore & complete" contract the Nakhla form relies on:
  *   1. Phase A (step 1 → "التالي") — request.create INCOMPLETE:
@@ -62,7 +62,7 @@ function postBooking(handler, payload) {
       headers: {
         'content-type': 'application/json',
         origin: 'http://localhost:5177',
-        'x-nakhla-session': sessionId,
+        'x-tabah-session': sessionId,
       },
       body: JSON.stringify(payload),
     }),

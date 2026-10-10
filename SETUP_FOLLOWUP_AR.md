@@ -60,8 +60,8 @@
 
     | المتغير | القيمة |
     |---|---|
-    | `NAKHLA_EXEC_URL` | رابط /exec من الخطوة ٩ |
-    | `NAKHLA_INGEST_SECRET` | نفس قيمة `INGEST_SECRET` من الخطوة ٦ حرفياً |
+    | `TABAH_EXEC_URL` | رابط /exec من الخطوة ٩ |
+    | `TABAH_INGEST_SECRET` | نفس قيمة `INGEST_SECRET` من الخطوة ٦ حرفياً |
 
 11. **Deploys ← Trigger deploy ← Clear cache and deploy site**.
 

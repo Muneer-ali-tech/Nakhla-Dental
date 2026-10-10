@@ -1,4 +1,4 @@
-/* Nakhla Dental external DEMO backend. No patient data. V1.0.0 (standalone Nakhla fork of External_v1) */
+/* Nakhla Dental external DEMO backend. No patient data. V1.0.0 (forked from Tabah Dent External_v1) */
 function fail_(code, retryable) {
   var e = new Error(code); e.publicCode = code;
   e.retryable = !!retryable; throw e;

@@ -69,7 +69,7 @@ function localBookingBackend(): Plugin {
         headers: {
           "content-type": (req.headers["content-type"] as string) || "application/json",
           origin,
-          "x-nakhla-session": (req.headers["x-nakhla-session"] as string) || "",
+          "x-tabah-session": (req.headers["x-tabah-session"] as string) || "",
         },
         body,
       });

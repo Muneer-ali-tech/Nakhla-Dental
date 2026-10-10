@@ -1,9 +1,10 @@
 /**
  * Nakhla Dental — booking submission client (two-phase demo flow).
  *
- * Standalone Nakhla booking client — the browser never talks to Google Apps
- * Script directly and never holds endpoint URLs or secrets. Every submission
- * goes to this site's own Netlify Function, which signs and forwards server-side:
+ * Same wire contract as the Tabah Dent site (src/lib/booking.ts there); keep
+ * the two in sync. The browser never talks to Google Apps Script directly and
+ * never holds endpoint URLs or secrets. Every submission goes to this site's
+ * own Netlify Function, which signs and forwards server-side:
  *
  *   Phase A — step 1 → "التالي"
  *     POST {action:"start", requestId, name, email, consent} →
@@ -21,7 +22,7 @@
  * the modal and reopens it continues the same logical booking attempt.
  *
  * Deployment variables live only in the Netlify UI (functions scope):
- *   NAKHLA_EXEC_URL, NAKHLA_INGEST_SECRET, FALLBACK_INTAKE_URL.
+ *   TABAH_EXEC_URL, TABAH_INGEST_SECRET, FALLBACK_INTAKE_URL.
  * See netlify/functions/booking.ts for the trusted-sender contract.
  */
 
@@ -260,7 +261,7 @@ async function postOnce(payload: BookingPayload): Promise<SubmitResult> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-nakhla-session": bookingSessionId(),
+        "x-tabah-session": bookingSessionId(),
       },
       body: JSON.stringify(payload),
       credentials: "omit",
