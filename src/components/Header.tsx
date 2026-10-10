@@ -95,17 +95,13 @@ export function Header() {
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* الجوال (<768): لا زر حجز في الهيدر — الحجز في الشريط السفلي (Dock).
+              سطح المكتب (≥768): الزر كما هو بالضبط. */}
+          <div className="flex items-center gap-3">
             <LangToggle />
             <button
               onClick={() => open()}
-              className="cham hidden min-h-[44px] items-center bg-bronze px-5 font-head text-[0.82rem] font-bold text-hajar transition-colors hover:bg-palm sm:inline-flex"
-            >
-              {tx({ ar: "احجز موعدي", en: "Book my visit" })}
-            </button>
-            <button
-              onClick={() => open()}
-              className="cham inline-flex min-h-[44px] items-center bg-bronze px-4 font-head text-[0.8rem] font-bold text-hajar sm:hidden"
+              className="cham hidden min-h-[44px] items-center bg-bronze px-5 font-head text-[0.82rem] font-bold text-hajar transition-colors hover:bg-palm md:inline-flex"
             >
               {tx({ ar: "احجز موعدي", en: "Book my visit" })}
             </button>

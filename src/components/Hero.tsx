@@ -30,7 +30,7 @@ export function Hero() {
   const h = H1[lang];
 
   return (
-    <section id="top" className="relative overflow-hidden pb-16 pt-[104px] lg:min-h-[100svh] lg:pb-20 lg:pt-[120px]">
+    <section id="top" className="relative overflow-hidden pb-16 pt-[104px] lg:min-h-[100svh] lg:pb-20 lg:pt-[120px] desk-hero">
       {/* سعف أخضر خفيف يلوّن ضوء القسم */}
       <div className="pointer-events-none absolute inset-0 text-palm mix-blend-multiply" style={{ opacity: 0.1 }}>
         <PalmShadow variant="c" className="start-[10%] -top-[22%] h-[90vmax] w-[90vmax] max-w-none lg:h-[56vmax] lg:w-[56vmax]" blur={2} />

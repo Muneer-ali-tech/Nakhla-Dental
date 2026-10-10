@@ -72,43 +72,61 @@ export function Dock() {
 
   return (
     <>
-      {/* زر المساعد (سطح المكتب) */}
+      {/* زر المساعد العائم: جوال — يسار الشريط السفلي ويرتفع فوق شريط العرض، سطح المكتب — كما كان */}
       <button
         onClick={() => setChat((c) => !c)}
-        className={cn("cham fixed bottom-6 end-6 z-[55] hidden min-h-[56px] items-center gap-3 bg-palm px-6 font-head text-[0.85rem] font-bold text-hajar shadow-[0_20px_40px_-15px_rgba(22,32,26,.6)] transition-all duration-500 hover:bg-bronze md:flex", show || chat ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0")}
+        className={cn(
+          "dock-fab cham fixed z-[55] flex items-center gap-3 bg-palm font-head font-bold text-hajar hover:bg-bronze",
+          "h-12 left-[14px] bottom-[calc(var(--dock-h)_+_12px_+_var(--offer-h))] px-4 text-[15px] shadow-[0_8px_24px_rgba(22,32,26,0.28)]",
+          "md:bottom-6 md:end-6 md:left-auto md:h-auto md:min-h-[56px] md:px-6 md:text-[0.85rem] md:shadow-[0_20px_40px_-15px_rgba(22,32,26,.6)]",
+          "lg:end-auto lg:start-6",
+          show || chat ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
+        )}
         aria-label={tx({ ar: "مساعد نخلة", en: "Nakhla assistant" })}
       >
         <Chat className="h-5 w-5" />
         {tx({ ar: "اسأل نخلة", en: "Ask Nakhla" })}
       </button>
 
-      {/* الشريط السفلي (جوال) */}
+      {/* الشريط السفلي (جوال): اتصال · حجز · واتساب — dir=ltr يثبّت الترتيب جسدياً في اللغتين */}
       <div
-        className={cn("fixed inset-x-0 bottom-0 z-[55] border-t border-sand bg-hajar/95 backdrop-blur-md transition-transform duration-500 md:hidden", show ? "translate-y-0" : "translate-y-full")}
-        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        dir="ltr"
+        className={cn(
+          "fixed inset-x-0 bottom-0 z-[55] flex items-center gap-2.5 border-t border-sand bg-hajar shadow-[0_-6px_20px_rgba(22,32,26,0.08)] transition-transform duration-500 md:hidden",
+          show ? "translate-y-0" : "translate-y-full"
+        )}
+        style={{ height: "var(--dock-h)", padding: "10px 14px calc(10px + env(safe-area-inset-bottom, 0px))" }}
       >
-        <div className="flex items-center gap-2 px-3 py-2.5">
-          <a href={`tel:${MAIN_PHONE.replace(/\s/g, "")}`} className="grid h-[52px] w-[52px] shrink-0 place-items-center border border-ink/25 text-palm" aria-label={tx({ ar: "اتصال", en: "Call" })}>
-            <Phone className="h-6 w-6" />
-          </a>
-          <a href={`https://wa.me/${WA_NUMBER}`} className="grid h-[52px] w-[52px] shrink-0 place-items-center border border-ink/25 text-palm" aria-label="WhatsApp">
-            <WhatsApp className="h-6 w-6" />
-          </a>
-          <button onClick={() => setChat((c) => !c)} className="grid h-[52px] w-[52px] shrink-0 place-items-center border border-ink/25 text-palm" aria-label={tx({ ar: "المساعد", en: "Assistant" })}>
-            <Chat className="h-6 w-6" />
-          </button>
-          <button onClick={() => open()} className="cham flex h-[52px] flex-1 items-center justify-center gap-2 bg-bronze font-head text-[0.9rem] font-bold text-hajar">
-            {tx({ ar: "احجز موعدي", en: "Book my visit" })}
-            <Arrow className="h-4 w-4" />
-          </button>
-        </div>
+        <a
+          href={`tel:${MAIN_PHONE.replace(/\s/g, "")}`}
+          className="dock-btn grid h-14 w-14 shrink-0 place-items-center border border-sand text-palm"
+          aria-label={tx({ ar: "اتصال", en: "Call" })}
+        >
+          <Phone className="h-6 w-6" />
+        </a>
+        <button
+          onClick={() => open()}
+          className="dock-btn dock-book cham flex h-14 min-w-0 flex-1 items-center justify-center gap-2 bg-bronze font-head text-[16px] font-bold text-hajar"
+        >
+          <span>{tx({ ar: "احجز موعدي", en: "Book an appointment" })}</span>
+          <Arrow className="h-4 w-4" />
+        </button>
+        <a
+          href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(tx({ ar: "السلام عليكم، أرغب بحجز موعد", en: "Hello, I'd like to book an appointment" }))}`}
+          target="_blank"
+          rel="noopener"
+          className="dock-btn grid h-14 w-14 shrink-0 place-items-center border border-sand text-palm"
+          aria-label={tx({ ar: "واتساب", en: "WhatsApp" })}
+        >
+          <WhatsApp className="h-6 w-6" />
+        </a>
       </div>
 
       {/* نافذة المحادثة */}
       <div
         className={cn(
           "fixed z-[85] flex flex-col overflow-hidden bg-hajar shadow-[0_30px_80px_-20px_rgba(22,32,26,.7)] transition-all duration-500",
-          "inset-x-3 bottom-[84px] h-[min(70svh,540px)] md:inset-x-auto md:bottom-24 md:end-6 md:h-[560px] md:w-[390px]",
+          "inset-x-3 bottom-[calc(var(--dock-h)_+_12px)] h-[min(70svh,540px)] md:inset-x-auto md:bottom-24 md:end-6 md:h-[560px] md:w-[390px] lg:end-auto lg:start-6",
           chat ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-8 opacity-0"
         )}
         role="dialog"

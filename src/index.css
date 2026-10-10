@@ -479,6 +479,13 @@ input[type="range"].nj::-moz-range-thumb {
   transform-origin: center;
   transition: transform 700ms;
 }
+/* بؤرة صور قبل/بعد العمودية على الشاشات الكبيرة فقط (1024+) حتى تبقى
+   الأسنان في مركز الكادر — أفقاً يبقى تحديد نصف الصورة (قبل/بعد) كما هو */
+@media (min-width: 1024px) {
+  :root {
+    --ba-focus: 55%;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -494,6 +501,57 @@ input[type="range"].nj::-moz-range-thumb {
     transform: none;
   }
   .lm > span {
+    transform: none;
+  }
+}
+
+/* ===== DESKTOP-ZOOM: للتراجع احذف هذه الكتلة كاملة ثم الكلاس desk-hero من Hero.tsx ===== */
+@media (min-width: 1024px) {
+  :root { --desk-zoom: 0.9; }
+  html { zoom: var(--desk-zoom); }
+  .desk-hero { min-height: calc(100svh / var(--desk-zoom)); }
+}
+
+/* ===== MOBILE DOCK SYSTEM (الجوال فقط، <768 حيث يظهر الشريط السفلي) ===== */
+@media (max-width: 767.98px) {
+  :root {
+    --dock-h: calc(76px + env(safe-area-inset-bottom, 0px));
+    --offer-h: 0px;
+  }
+  html {
+    scroll-padding-bottom: calc(var(--dock-h) + 12px);
+  }
+  footer .wrap {
+    padding-bottom: calc(var(--dock-h) + 140px);
+  }
+}
+/* نص زر الحجز داخل شريط dir=ltr يتبع اتجاه لغة الصفحة */
+html[dir="rtl"] .dock-book {
+  direction: rtl;
+}
+html[dir="ltr"] .dock-book {
+  direction: ltr;
+}
+/* ضغط أزرار الشريط */
+.dock-btn {
+  transition: transform 120ms ease;
+}
+.dock-btn:active {
+  transform: scale(0.97);
+}
+/* زر المساعد العائم: bottom خاص (فوق الشريط وشريط العرض) بحركة 250ms،
+   وباقي الحركات كما هي على سطح المكتب */
+.dock-fab {
+  transition: bottom 250ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-btn {
+    transition: none;
+  }
+  .dock-btn:active {
     transform: none;
   }
 }

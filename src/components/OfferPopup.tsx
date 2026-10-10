@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang, type Bi } from "../lib/i18n";
 import { useBooking } from "./Booking";
 import { Check, Close, LogoMark, Arrow } from "./Icons";
 import { cn } from "../utils/cn";
 
 /* ============================================================
-   نظام العرض الذكي (نفس عقد طابة دنت، بهوية نخلة)
+   نظام العرض الذكي (عقد مستقل، بهوية نخلة)
    — سطح المكتب: نافذة عرض تظهر عند بلوغ التمرير ٣٠٪ من الصفحة
      أو عندما يتجه المؤشر نحو مغادرة الصفحة (Exit Intent) —
      مرة واحدة لكل جلسة (sessionStorage).
@@ -122,6 +122,24 @@ export function OfferPopup() {
     setRibbon(progress >= TRIGGER);
   }, [isDesktop, dismissed, progress]);
 
+  /* — الجوال: شريط العرض يرفع زر المساعد فوقه (ارتفاع الشريط + 12px عبر
+     --offer-h على :root) ويُعيده بمكانته عند الاختفاء. ResizeObserver يبقي
+     القيمة دقيقة إن تغيّر ارتفاع الشريط (التفاف النص، تغيّر اللغة…) — */
+  const ribbonRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ribbonRef.current;
+    if (!ribbon || isDesktop || !el) return;
+    const apply = () =>
+      document.documentElement.style.setProperty("--offer-h", `${el.offsetHeight + 12}px`);
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      document.documentElement.style.removeProperty("--offer-h");
+    };
+  }, [ribbon, isDesktop]);
+
   /* Escape يغلق نافذة سطح المكتب */
   useEffect(() => {
     if (!shown) return;
@@ -219,12 +237,13 @@ export function OfferPopup() {
   if (!isDesktop && ribbon) {
     return (
       <div
+        ref={ribbonRef}
         role="status"
         className={cn(
           "pop fixed inset-x-3 z-[56] flex items-center justify-between gap-2 bg-palm px-3 py-2 text-hajar",
           "shadow-[0_18px_40px_-12px_rgba(20,42,29,0.55)]",
         )}
-        style={{ bottom: "calc(80px + env(safe-area-inset-bottom))" }}
+        style={{ bottom: "calc(var(--dock-h) + 12px)" }}
       >
         <span className="flex min-w-0 items-center gap-2.5">
           <LogoMark className="h-7 w-7 shrink-0 text-bronze-soft" />
