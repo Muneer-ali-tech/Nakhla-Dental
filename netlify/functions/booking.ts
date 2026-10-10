@@ -1,8 +1,8 @@
 /**
  * Nakhla Dental — trusted server-side booking sender (Netlify Function, v2 format).
- * Same External_v1 contract as the Tabah Dent sender; deployed with the
- * Nakhla site so the browser talks only to its own origin. Keep this file
- * in sync with the parent project's netlify/functions/booking.ts.
+ * Standalone sender deployed with the Nakhla site so the browser talks only
+ * to its own origin. Fully independent of any other clinic's deployment:
+ * its own env names, its own session header, its own origin policy.
  *
  * Two-phase External_v1 flow ("restore & complete"):
  *
@@ -22,10 +22,10 @@
  * on retry only ts + signature change, body + event_id stay byte-identical).
  *
  * Environment variables (Netlify UI only — never VITE_/public):
- *   TABAH_EXEC_URL       https://script.google.com/macros/s/<ID>/exec (External_v1)
- *   TABAH_INGEST_SECRET  random URL-safe secret, 43-128 chars
- *   FALLBACK_INTAKE_URL  optional legacy simple-intake /exec URL; used only when
- *                        both TABAH_ variables are absent (demo-night switch)
+ *   NAKHLA_EXEC_URL       https://script.google.com/macros/s/<ID>/exec (External_v1)
+ *   NAKHLA_INGEST_SECRET  random URL-safe secret, 43-128 chars
+ *   FALLBACK_INTAKE_URL   optional legacy simple-intake /exec URL; used only when
+ *                         both NAKHLA_ variables are absent (demo-night switch)
  *
  * The v1 path requires a valid email and an explicit service consent
  * (External_v1 demo contract). On the v1 path:
@@ -38,7 +38,7 @@
  * consent accepted but unused. The mode is known only server-side; the
  * browser form sends the same payload either way.
  *
- * External_v1 v1 contract implemented here (Tabah_Dent_External_v1/HANDOFF):
+ * External_v1 v1 contract implemented here (Nakhla fork — see external-backend/):
  *   - envelope {v:1, key_id:"ingest", ts, event_id, body, signature};
  *     message = [v, key_id, ts, event_id, body].join("\n");
  *     HMAC-SHA256 lowercase hex; on retry only ts + signature are refreshed
@@ -145,8 +145,13 @@ const INGEST_KEY_ID = "ingest";
 const MAX_BODY_BYTES = 8192;
 const MAX_RESPONSE_CHARS = 131072;
 
-/* Edge-protection constants (HANDOFF bound 5) */
-const ALLOWED_ORIGINS = new Set(["https://tabah-dent.netlify.app"]);
+/* Edge-protection constants (HANDOFF bound 5).
+ * No cross-origin production domain is pre-allowlisted: this function only
+ * accepts same-origin https requests from whichever domain the Nakhla site
+ * is deployed on (covers both the مجمع and مركز variants automatically).
+ * Add an explicit origin here only if a second trusted front-end must ever
+ * call this function directly. */
+const ALLOWED_ORIGINS = new Set<string>();
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const SESSION_TTL_MS = 6 * 60 * 60 * 1000;
@@ -310,7 +315,7 @@ export function isOriginAllowed(request: Request, origin: string): boolean {
 
 /** Stable, non-reversible key from the client identity the edge gives us. */
 function clientKey(sessionId: string): string {
-  return createHash("sha256").update(`tabah-edge:${sessionId}`).digest("hex");
+  return createHash("sha256").update(`nakhla-edge:${sessionId}`).digest("hex");
 }
 
 /**
@@ -353,7 +358,7 @@ export function checkEdge(request: Request): EdgeSession {
   if (!isOriginAllowed(request, origin)) {
     return { ok: false, error: fail(false, "ORIGIN_NOT_ALLOWED", "origin") };
   }
-  const sessionId = request.headers.get("x-tabah-session") ?? "";
+  const sessionId = request.headers.get("x-nakhla-session") ?? "";
   if (!SESSION_ID_RE.test(sessionId)) {
     return { ok: false, error: fail(false, "VALIDATION", "session") };
   }
@@ -1000,8 +1005,8 @@ export default async function handler(request: Request): Promise<Response> {
   const raw = await request.text();
   if (raw.length > MAX_BODY_BYTES) return jsonOut(413, fail(false, "VALIDATION", "body"));
 
-  const execUrl = (process.env.TABAH_EXEC_URL ?? "").trim();
-  const secret = (process.env.TABAH_INGEST_SECRET ?? "").trim();
+  const execUrl = (process.env.NAKHLA_EXEC_URL ?? "").trim();
+  const secret = (process.env.NAKHLA_INGEST_SECRET ?? "").trim();
   const fallbackUrl = (process.env.FALLBACK_INTAKE_URL ?? "").trim();
 
   const mode: "v1" | "fallback" | "none" =

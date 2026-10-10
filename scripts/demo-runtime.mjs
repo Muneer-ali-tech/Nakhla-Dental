@@ -3,10 +3,10 @@
 /**
  * Nakhla Dental — standalone local demo runtime.
  *
- * Self-contained twin of the Tabah Dent workspace's scripts/demo-runtime.mjs:
- * every default path (booking function, external backend, mail config) points
- * INSIDE this folder, so the Nakhla site folder can be moved or copied
- * anywhere and `npm run dev` still runs the full two-phase booking demo.
+ * Self-contained local demo runtime for the Nakhla site: every default path
+ * (booking function, external backend, mail config) points INSIDE this
+ * folder, so the Nakhla site folder can be moved or copied anywhere and
+ * `npm run dev` still runs the full two-phase booking demo.
  *
  * Wires the REAL Netlify booking function to an in-process simulation of the
  * external system (the actual .gs sources inside a fake-Google vm), so the
@@ -308,8 +308,8 @@ export function createDemoRuntime(opts = {}) {
   // CJS bundle → load via require (its default export is the handler).
   const fn = require(outFile).default;
 
-  process.env.TABAH_EXEC_URL = EXEC_URL;
-  process.env.TABAH_INGEST_SECRET = SECRET;
+  process.env.NAKHLA_EXEC_URL = EXEC_URL;
+  process.env.NAKHLA_INGEST_SECRET = SECRET;
   delete process.env.FALLBACK_INTAKE_URL;
 
   const realFetch = globalThis.fetch;

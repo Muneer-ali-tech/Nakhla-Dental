@@ -221,7 +221,7 @@ function Pane({ side }: { side: Case["before"] }) {
         className="h-full w-full object-cover"
         style={{
           objectFit: "cover",
-          objectPosition: isLeft ? "left center" : "right center",
+          objectPosition: isLeft ? "left var(--ba-focus, center)" : "right var(--ba-focus, center)",
           /* قص نصف الصورة: نجعل عرض الصورة ضعف الحاوية ونزيحها */
           width: "200%",
           maxWidth: "none",
@@ -316,11 +316,11 @@ export function BeforeAfter() {
           </Reveal>
         </div>
 
-        <div className="mt-12 grid gap-8 lg:mt-16 lg:grid-cols-12 lg:gap-12">
+        <div className="mt-12 grid gap-8 lg:mt-16 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
           {/* فهرس الحالات */}
           {/* min-w-0: كي ينكمش العمود على الجوال ولا يتمدد فهرس الحالات
               الأفقي إلى عرض محتواه فيكسر الصفحة (فيض يساراً في RTL) */}
-          <div className="min-w-0 lg:col-span-3">
+          <div className="min-w-0 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:self-start">
             <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0 lg:pb-0" role="tablist">
               {CASES.map((k, i) => (
                 <button
@@ -347,12 +347,14 @@ export function BeforeAfter() {
             </div>
           </div>
 
-          {/* المنصّة */}
-          <div className="min-w-0 lg:col-span-9">
-            <div ref={stageRef} key={c.id} className="pop">
-              {/* PROMPT (قبل): {c.before.prompt} — PROMPT (بعد): {c.after.prompt} — موجودة في مصفوفة CASES أعلاه */}
+          {/* المنصّة — على 1024+ تتفكك إلى عناصر الشبكة الأم (lg:contents)
+              بترتيب DOM محفوظ حرفياً للجوال والتابلت: الصورة 58% يساراً،
+              والفهرس + شريط الإجراء 42% بجوارها في النطاق الرأسي نفسه */}
+          <div key={c.id} className="lg:contents">
+            {/* PROMPT (قبل): {c.before.prompt} — PROMPT (بعد): {c.after.prompt} — موجودة في مصفوفة CASES أعلاه */}
+            <div className="min-w-0 lg:col-span-7 lg:col-start-6 lg:row-start-1 lg:row-span-2 lg:self-start">
               <div className="relative">
-                <div dir="ltr" className="cham-lg relative aspect-[5/4] select-none overflow-hidden bg-palm-deep sm:aspect-[800/520]">
+                <div ref={stageRef} dir="ltr" className="pop cham-lg relative aspect-[5/4] select-none overflow-hidden bg-palm-deep sm:aspect-[800/520] lg:aspect-auto lg:h-[clamp(420px,68svh,620px)] lg:max-w-[940px]">
                   <div className="absolute inset-0">
                     <Pane side={c.after} />
                   </div>
@@ -389,38 +391,41 @@ export function BeforeAfter() {
                   />
                 </div>
               </div>
+            </div>
 
-              {/* أزرار القفز + وصف الإجراء */}
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex gap-2">
-                  <button onClick={() => snap("before")} className="cham min-h-[46px] border border-hajar/35 px-6 font-head text-[0.82rem] font-bold hover:bg-hajar hover:text-palm">
-                    {tx({ ar: "قبل", en: "Before" })}
-                  </button>
-                  <button onClick={() => snap("after")} className="cham min-h-[46px] bg-bronze px-6 font-head text-[0.82rem] font-bold hover:bg-hajar hover:text-palm">
-                    {tx({ ar: "بعد", en: "After" })}
-                  </button>
-                  <button onClick={hint} className="min-h-[46px] px-3 font-head text-[0.78rem] font-bold text-hajar/60 underline underline-offset-8 hover:text-hajar">
-                    {tx({ ar: "أعد العرض", en: "Replay" })}
-                  </button>
-                </div>
-                <dl className="flex flex-wrap gap-x-8 gap-y-2 text-[0.85rem]">
-                  <div>
-                    <dt className="text-hajar/50">{tx({ ar: "الإجراء", en: "Procedure" })}</dt>
-                    <dd className="font-bold">{tx(c.procedure)}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-hajar/50">{tx({ ar: "مدة العلاج", en: "Duration" })}</dt>
-                    <dd className="font-bold">{tx(c.duration)}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-hajar/50">{tx({ ar: "الزيارات", en: "Visits" })}</dt>
-                    <dd className="font-bold">{tx(c.visits)}</dd>
-                  </div>
-                </dl>
+            {/* أزرار القفز + وصف الإجراء — على 1024+ عمودياً بجوار الصورة */}
+            <div className="pop mt-5 flex flex-wrap items-center justify-between gap-4 lg:col-span-5 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-start lg:flex-col lg:items-start lg:gap-6">
+              <div className="flex gap-2">
+                <button onClick={() => snap("before")} className="cham min-h-[46px] border border-hajar/35 px-6 font-head text-[0.82rem] font-bold hover:bg-hajar hover:text-palm">
+                  {tx({ ar: "قبل", en: "Before" })}
+                </button>
+                <button onClick={() => snap("after")} className="cham min-h-[46px] bg-bronze px-6 font-head text-[0.82rem] font-bold hover:bg-hajar hover:text-palm">
+                  {tx({ ar: "بعد", en: "After" })}
+                </button>
+                <button onClick={hint} className="min-h-[46px] px-3 font-head text-[0.78rem] font-bold text-hajar/60 underline underline-offset-8 hover:text-hajar">
+                  {tx({ ar: "أعد العرض", en: "Replay" })}
+                </button>
               </div>
+              <dl className="flex flex-wrap gap-x-8 gap-y-2 text-[0.85rem]">
+                <div>
+                  <dt className="text-hajar/50">{tx({ ar: "الإجراء", en: "Procedure" })}</dt>
+                  <dd className="font-bold">{tx(c.procedure)}</dd>
+                </div>
+                <div>
+                  <dt className="text-hajar/50">{tx({ ar: "مدة العلاج", en: "Duration" })}</dt>
+                  <dd className="font-bold">{tx(c.duration)}</dd>
+                </div>
+                <div>
+                  <dt className="text-hajar/50">{tx({ ar: "الزيارات", en: "Visits" })}</dt>
+                  <dd className="font-bold">{tx(c.visits)}</dd>
+                </div>
+              </dl>
+            </div>
 
-              {/* المشكلة / النتيجة — منظّمان بجوار المقارنة */}
-              <div className="mt-10 grid gap-8 border-t border-hajar/15 pt-8 md:grid-cols-2 md:gap-12">
+            {/* القسم السفلي — يبدأ بعد أسفل الصورة مباشرة؛ المسافة الوحيدة
+                بينهما clamp(32px, 4svh, 48px) ولا يسبق الخطَّ أي عنصر فارغ */}
+            <div className="pop lg:col-span-7 lg:col-start-6 lg:row-start-3 lg:self-start lg:mt-[clamp(32px,4svh,48px)]">
+              <div className="mt-10 grid gap-8 border-t border-hajar/15 pt-8 md:grid-cols-2 md:gap-12 lg:mt-0">
                 <div>
                   <h3 className="mb-4 font-head text-[0.85rem] font-bold text-sand">{tx({ ar: "قبل — ما جاء به المريض", en: "Before — what the patient came with" })}</h3>
                   <ul className="space-y-3">
